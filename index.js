@@ -1,12 +1,13 @@
 let des = 1;
 const resultLi = document.querySelectorAll("#mesdes li");
-const startPlay = document.querySelector("button");
+const startPlay = document.querySelector("#startPlay"); // Correction ici
 const stopPlay = document.querySelector("#stopPlay");
 const resetPlay = document.querySelector("#resetPlay");
 const nbRep = document.querySelector("h2 span");
 const ulCadre = document.querySelector("ul");
 let repetitions = 0;
 let gameInterval;
+let lastTime = 0;
 
 const buttons = document.querySelectorAll("button");
 
@@ -14,11 +15,9 @@ buttons.forEach((button) => {
   button.addEventListener("mousedown", function () {
     this.classList.add("scale-effect");
   });
-
   button.addEventListener("mouseup", function () {
     this.classList.remove("scale-effect");
   });
-
   button.addEventListener("mouseleave", function () {
     this.classList.remove("scale-effect");
   });
@@ -27,17 +26,18 @@ buttons.forEach((button) => {
 // programme
 startPlay.addEventListener("click", () => {
   if (!gameInterval) {
-    gameInterval = setInterval(playGame, 50);
+    lastTime = performance.now();
+    gameInterval = requestAnimationFrame(playGame);
   }
 });
 
 stopPlay.addEventListener("click", () => {
-  clearInterval(gameInterval);
+  cancelAnimationFrame(gameInterval);
   gameInterval = null;
 });
 
 resetPlay.addEventListener("click", () => {
-  clearInterval(gameInterval);
+  cancelAnimationFrame(gameInterval);
   gameInterval = null;
   repetitions = 0;
   nbRep.textContent = 0;
@@ -47,38 +47,23 @@ resetPlay.addEventListener("click", () => {
   });
 });
 
-function playGame() {
-  let totalDes = 0;
-  resultLi.forEach((li) => {
-    des = Math.ceil(Math.random() * 6);
-    totalDes += des;
-
-    switch (des) {
-      case 1:
-        li.innerHTML = `<img src="./assets/images/dé 1.png" alt="dés N°1" >`;
-        break;
-      case 2:
-        li.innerHTML = `<img src="./assets/images/dé 2.png" alt="dés N°2" >`;
-        break;
-      case 3:
-        li.innerHTML = `<img src="./assets/images/dé 3.png" alt="dés N°3" >`;
-        break;
-      case 4:
-        li.innerHTML = `<img src="./assets/images/dé 4.png" alt="dés N°4" >`;
-        break;
-      case 5:
-        li.innerHTML = `<img src="./assets/images/dé 5.png" alt="dés N°5" >`;
-        break;
-      case 6:
-        li.innerHTML = `<img src="./assets/images/dé 6.png" alt="dés N°6" >`;
-        break;
+function playGame(time) {
+  if (time - lastTime > 50) {
+    // Exécute la logique toutes les 50ms
+    lastTime = time;
+    let totalDes = 0;
+    resultLi.forEach((li) => {
+      des = Math.ceil(Math.random() * 6);
+      totalDes += des;
+      li.innerHTML = `<img src="./assets/images/dé ${des}.png" alt="dés N°${des}" >`;
+    });
+    repetitions++;
+    nbRep.textContent = repetitions;
+    if (totalDes === 30) {
+      cancelAnimationFrame(gameInterval);
+      ulCadre.classList.add("encadrer");
+      gameInterval = null;
     }
-  });
-  repetitions++;
-  nbRep.textContent = repetitions;
-  if (totalDes >= 30) {
-    clearInterval(gameInterval);
-    ulCadre.classList.add("encadrer");
-    gameInterval = null;
   }
+  if (gameInterval) requestAnimationFrame(playGame);
 }

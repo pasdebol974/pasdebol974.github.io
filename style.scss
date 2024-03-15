@@ -1,154 +1,189 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+// Variables
+$font-primary: "Poppins", sans-serif;
+$color-primary: rgba(0, 255, 55, 1);
+$color-secondary: whitesmoke;
+$color-background-gradient-start: rgba(0, 0, 0, 1);
+$color-background-gradient-end: $color-primary;
+$color-shadow: #134519;
+$breakpoint-mobile: 740px;
+$transition-standard: 0.3s ease;
+
+// Mixins
+@mixin box-shadow($x, $y, $blur, $spread, $color) {
+  -webkit-box-shadow: $x $y $blur $spread $color;
+  box-shadow: $x $y $blur $spread $color;
+}
+
+@mixin respond-to($media) {
+  @if $media == mobile {
+    @media (max-width: $breakpoint-mobile) {
+      @content;
+    }
+  }
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
 li {
-    list-style: none;
+  list-style: none;
 }
+
 button {
-    padding: 15px 30px;
-    margin: 0 5px;
-    border-radius: 10px;
-    border: none;
-    font-size: 1.2rem;
-    background: rgb(0,0,0);
-    background: linear-gradient(32deg, rgba(0,0,0,1) 11%, rgba(0,74,17,1) 49%, rgba(0,255,55,1) 96%);
-    color: whitesmoke;
-    -webkit-box-shadow: 5px 5px 15px 5px #134519; 
-    box-shadow: 5px 5px 15px 5px #134519;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-style: normal;
-    cursor: pointer;
-    transition: 0.8s ;
-     &:hover {
-      background: rgb(14, 13, 13);
-     }
-     
+  padding: 15px 30px;
+  margin: 0 5px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1.2rem;
+  background: linear-gradient(
+    32deg,
+    $color-background-gradient-start 11%,
+    rgba(0, 74, 17, 1) 49%,
+    $color-background-gradient-end 96%
+  );
+  color: $color-secondary;
+  @include box-shadow(5px, 5px, 15px, 5px, $color-shadow);
+  font-family: $font-primary;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition-standard;
+
+  &:hover {
+    background: darken($color-background-gradient-start, 10%);
+  }
 }
 
 body {
-    color: whitesmoke;
-    font-family: "Poppins", sans-serif;
-    background: url(./assets/images/Background-min.png) center/cover ;
-    height: 100vh;
-    display: flex;
-    // flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  color: $color-secondary;
+  font-family: $font-primary;
+  background: url(./assets/images/Background-min.png) center/cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+
+  h1,
+  h2 {
+    font-weight: 600;
+    text-shadow: 2px 2px 2px darken($color-shadow, 20%);
+    transition: font-size $transition-standard;
+  }
+
+  h1 {
+    font-size: 4rem;
+    margin-top: 50px;
+
+    @include respond-to(mobile) {
+      font-size: 2.5rem;
+      margin-top: 30px;
+    }
+  }
+
+  p,
+  h2 {
+    font-size: 1.1rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 15px;
+    max-width: 80%;
+
+    @include respond-to(mobile) {
+      max-width: 90%;
+      font-size: 0.9rem;
+    }
+  }
+
+  p {
+    text-shadow: 2px 2px 2px $color-shadow;
+    a {
+      text-decoration: none;
+      color: $color-secondary;
+      font-weight: 600;
+
+      &:visited {
+        color: $color-secondary;
+      }
+    }
+  }
+
+  ul {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
+    justify-content: space-around;
+    width: 80%;
     margin: 0 auto;
-    
-     
-    h1 {
-        font-size: 4rem;
-        font-weight: 600;
-        margin-top: 50px;
-        }
-        @media (max-width: 740px){
-          h1 {
-            font-size: 2.5rem;
-            margin-top: 30px;
-          }
-        }
-    p {
-      font-size: 1.1rem;
-      text-align: center;
-      text-shadow: 2px 2px 2px #474747;
-      backdrop-filter: blur(10px);
-      padding: 15px;
-      border-radius: 10px;
-      max-width: 80%;
-      a {
-        text-decoration: none;
-        font-size: 1.2rem;
-        color: whitesmoke;
-        font-weight: 600;
-        &:visited {
-          color: whitesmoke;
-          text-decoration: none;
+    transition: 0.4s ease-in;
+
+    li {
+      margin: 20px 0;
+      img {
+        @include box-shadow(5px, 5px, 15px, 5px, $color-shadow);
+        border-radius: 10px;
+        transition: transform $transition-standard;
+
+        @include respond-to(mobile) {
+          width: 50px;
+          height: 50px;
         }
       }
     }
-    @media (max-width: 740px) {
-      p{
-        max-width: 90%;
-        font-size: 0.9rem;
-      }
-    }
-    ul {
-        display: flex;
-        justify-content: space-around;
-        width: 80%;
-        margin: 0 auto;
-        transition: 0.4s ease-in;
-        li {
-          margin: 20px 0;  
-            img {
-                box-shadow: 5px 5px 15px 5px #134519;
-                border-radius: 10px;
-            }
-        }
-        @media (max-width: 740px) {
-          img {
-            width: 50px;
-            height: 50px;
-          }
-        }
-    }
-    .contenairBtn {
-      display: flex;
-      justify-content: space-around;
-      width: 60%;
-      .scale-effect {
-        transform: scale(1.2); 
-        transition: transform 0.3s ease; 
-      }
-      @media (max-width: 740px) {
-        button {
-          padding: 8px 15px;
-          margin: 0 5px;
-        }
-      }
+  }
+
+  .contenairBtn {
+    display: flex;
+    justify-content: space-around;
+    width: 60%;
+
+    .scale-effect {
+      transform: scale(1.2);
     }
 
-    .encadrer {
-      background: #000;
-        padding: 0 10px;
-        border-radius: 30px;
-        border: 5px solid rgb(2, 228, 2);
+    @include respond-to(mobile) {
+      button {
+        padding: 8px 15px;
+      }
     }
+  }
 
-    h2 {
-      text-shadow: 2px 2px 2px #474747;
-      font-size: 1.2rem;
-    }
-    
-   
+  .encadrer {
+    background: $color-background-gradient-start;
+    padding: 0 10px;
+    border-radius: 30px;
+    border: 5px solid $color-primary;
+  }
 }
+
 footer {
   justify-content: end;
-  background: rgb(0,0,0);
-  background: linear-gradient(32deg, rgba(0,0,0,1) 11%, rgba(0,74,17,1) 49%, rgba(0,255,55,1) 96%);
+  background: linear-gradient(
+    32deg,
+    $color-background-gradient-start 11%,
+    rgba(0, 74, 17, 1) 49%,
+    $color-background-gradient-end 96%
+  );
   width: 100%;
   text-align: center;
-    h4 {
-      padding: 10px;
-      font-size: 0.8rem;
-      a {
-        color: whitesmoke;
-        font-size: 0.8rem;
-      }
+
+  h4 {
+    padding: 10px;
+    font-size: 0.8rem;
+    a {
+      color: $color-secondary;
     }
+  }
 }
